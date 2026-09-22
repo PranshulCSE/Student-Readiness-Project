@@ -117,3 +117,35 @@ This document records all AI-assisted engineering actions, prompts, accepted des
   - Full suite run: `npm test` exited with code 0.
 - **Files affected:**
   - `docs/*`
+
+---
+
+## Entry 006 — 2026-09-22
+- **Tool:** Antigravity (Gemini 3.8 Flash)
+- **Material prompt (verbatim or summarized):** Fix Node.js 24 ESM runtime SyntaxError on `npm run dev:api` where type-only exports like `CompetencyKey` caused module instantiation failures.
+- **Accepted output:**
+  - Converted all pure TypeScript type and interface imports across `apps/api` to `import type` and `export type` syntax.
+  - Enabled Fastify listener auto-start in `apps/api/src/server.ts` when running in non-test mode (`process.env.NODE_ENV !== 'test'`).
+  - Rebuilt all workspaces (`npm run build`) and verified API server boots up cleanly.
+- **Rejected output:**
+  - Rejected emitting dummy runtime JavaScript objects for TypeScript types in `@student-readiness/shared`; maintained clean type erasure with standard `import type` semantics.
+- **Verification performed:**
+  - Verified `node -e "import('./apps/api/dist/server.js')"` starts and logs successfully.
+  - Executed full test suite `npm test`: all 36 tests passed.
+- **Files affected:**
+  - `apps/api/src/auth/jwt.ts`
+  - `apps/api/src/auth/rbac.ts`
+  - `apps/api/src/auth/tenant.ts`
+  - `apps/api/src/db/schema.ts`
+  - `apps/api/src/domain/errors.ts`
+  - `apps/api/src/domain/readiness.ts`
+  - `apps/api/src/domain/weights.ts`
+  - `apps/api/src/middleware/errorHandler.ts`
+  - `apps/api/src/modules/activity/service.ts`
+  - `apps/api/src/modules/attempts/service.ts`
+  - `apps/api/src/modules/students/repository.ts`
+  - `apps/api/src/modules/students/service.ts`
+  - `apps/api/src/mongo/collections.ts`
+  - `apps/api/src/server.ts`
+  - `docs/AI_LOG.md`
+

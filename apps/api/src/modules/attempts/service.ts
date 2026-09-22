@@ -7,7 +7,7 @@ import {
   computeRequestFingerprint,
 } from '../idempotency/service.js';
 import { computeReadiness } from '../../domain/readiness.js';
-import {
+import type {
   CreateAttempt,
   AttemptResponse,
   CompetencyKey,

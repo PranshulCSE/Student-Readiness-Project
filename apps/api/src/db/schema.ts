@@ -1,4 +1,4 @@
-import { CompetencyKey, Readiness, StudentStatus, UserRole } from '@student-readiness/shared';
+import type { CompetencyKey, Readiness, StudentStatus, UserRole } from '@student-readiness/shared';
 
 export interface TenantRow {
   id: string;

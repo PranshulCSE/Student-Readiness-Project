@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { UserRole } from '@student-readiness/shared';
+import type { UserRole } from '@student-readiness/shared';
 import { ForbiddenError, UnauthenticatedError } from '../domain/errors.js';
 
 export function requireRoles(...allowedRoles: UserRole[]) {

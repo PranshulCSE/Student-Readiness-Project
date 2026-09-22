@@ -1,5 +1,5 @@
 import { getEventsCollection } from '../../mongo/collections.js';
-import {
+import type {
   ActivityResponse,
   ActivityItem,
   DuplicateStatsItem,

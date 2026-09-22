@@ -1,7 +1,7 @@
 import { FastifyError, FastifyRequest, FastifyReply } from 'fastify';
 import { ZodError } from 'zod';
 import { AppError } from '../domain/errors.js';
-import { ErrorEnvelope, FieldError } from '@student-readiness/shared';
+import type { ErrorEnvelope, FieldError } from '@student-readiness/shared';
 
 export function errorHandler(
   error: FastifyError | AppError | Error,

@@ -1,13 +1,13 @@
 import { IDatabaseClient, getDbClient } from '../../db/client.js';
 import { StudentsRepository } from './repository.js';
 import { computeReadiness } from '../../domain/readiness.js';
-import {
+import { COMPETENCIES_METADATA } from '@student-readiness/shared';
+import type {
   StudentListItem,
   StudentListResponse,
   StudentDetail,
   StudentQuery,
   PatchStudent,
-  COMPETENCIES_METADATA,
   CompetencyKey,
 } from '@student-readiness/shared';
 import { NotFoundError, ConflictVersionError } from '../../domain/errors.js';

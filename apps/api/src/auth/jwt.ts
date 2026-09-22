@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { config } from '../config/index.js';
-import { JwtPayload, UserRole } from '@student-readiness/shared';
+import type { JwtPayload, UserRole } from '@student-readiness/shared';
 import { UnauthenticatedError } from '../domain/errors.js';
 
 export function signToken(payload: {

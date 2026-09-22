@@ -1,4 +1,4 @@
-import { ErrorCode, FieldError } from '@student-readiness/shared';
+import type { ErrorCode, FieldError } from '@student-readiness/shared';
 
 export class AppError extends Error {
   public readonly code: ErrorCode;

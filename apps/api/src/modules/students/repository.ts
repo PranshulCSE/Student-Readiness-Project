@@ -1,6 +1,6 @@
 import { IDatabaseClient } from '../../db/client.js';
 import { StudentRow } from '../../db/schema.js';
-import { CompetencyKey } from '@student-readiness/shared';
+import type { CompetencyKey } from '@student-readiness/shared';
 
 export interface LatestAttemptRow {
   id: string;

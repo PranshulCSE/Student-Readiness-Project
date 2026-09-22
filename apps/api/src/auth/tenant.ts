@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { verifyToken } from './jwt.js';
 import { UnauthenticatedError } from '../domain/errors.js';
-import { UserRole } from '@student-readiness/shared';
+import type { UserRole } from '@student-readiness/shared';
 
 export interface AuthenticatedUser {
   userId: string;

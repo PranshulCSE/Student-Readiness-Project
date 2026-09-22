@@ -1,7 +1,8 @@
-import { CompetencyKey, Readiness } from '@student-readiness/shared';
+import type { CompetencyKey, Readiness } from '@student-readiness/shared';
 import { WEIGHTS, COMPETENCY_KEYS } from './weights.js';
 
-export { CompetencyKey, Readiness, WEIGHTS, COMPETENCY_KEYS };
+export type { CompetencyKey, Readiness };
+export { WEIGHTS, COMPETENCY_KEYS };
 
 export function round2(num: number): number {
   return Math.round((num + Number.EPSILON) * 100) / 100;

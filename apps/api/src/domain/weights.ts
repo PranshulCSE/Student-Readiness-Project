@@ -1,4 +1,4 @@
-import { CompetencyKey } from '@student-readiness/shared';
+import type { CompetencyKey } from '@student-readiness/shared';
 
 export const WEIGHTS: Record<CompetencyKey, number> = {
   frontend: 0.30,
