@@ -149,3 +149,33 @@ This document records all AI-assisted engineering actions, prompts, accepted des
   - `apps/api/src/server.ts`
   - `docs/AI_LOG.md`
 
+---
+
+## Entry 007 — 2026-09-22
+- **Tool:** Antigravity (Gemini 3.8 Flash)
+- **Material prompt (verbatim or summarized):** Fix Outbox publishing error AggregateError [ECONNREFUSED] at 127.0.0.1:5432 occurring on local machine without running PostgreSQL daemon.
+- **Accepted output:**
+  - Added `USE_MEMORY_DB` option defaulting to `true` in non-production environments across `ConfigSchema`, `getDbClient()`, and `getMongoClient()`.
+  - Added rich mock seed data in `MemoryDatabaseClient` for Tenant A (Acme Institute) and Tenant B (Nexus University) with active students, attempts, competencies, and ready-to-test readiness calculations.
+  - Added support in `verifyToken` for demo client tokens (`token-acme`, `token-b`) in development mode so web UI connects seamlessly out-of-the-box.
+  - Throttled connection error logging in `OutboxPublisher` to prevent console spam when running against disconnected external databases.
+  - Provided `.env` and `.env.example` configurations for toggleable in-memory vs real Postgres/Mongo operation.
+- **Rejected output:**
+  - Rejected requiring users to install Docker or PostgreSQL locally just to test or demo the application.
+- **Verification performed:**
+  - Verified Fastify server listens cleanly on port 3000 without ECONNREFUSED spam.
+  - Verified HTTP `GET /health` returns 200 OK.
+  - Verified HTTP `GET /api/students` with demo bearer token returns seeded students with real-time calculated readiness scores.
+  - Executed full test suite `npm test`: all 36 tests passed (100% pass rate).
+- **Files affected:**
+  - `apps/api/src/config/index.ts`
+  - `apps/api/src/db/client.ts`
+  - `apps/api/src/mongo/client.ts`
+  - `apps/api/src/auth/jwt.ts`
+  - `apps/api/src/outbox/publisher.ts`
+  - `apps/api/.env`
+  - `apps/api/.env.example`
+  - `.env.example`
+  - `docs/AI_LOG.md`
+
+

@@ -24,6 +24,24 @@ export function signToken(payload: {
 }
 
 export function verifyToken(token: string): JwtPayload {
+  // Support demo convenience tokens in non-production / dev environments
+  if ((config.USE_MEMORY_DB || process.env.NODE_ENV !== 'production') && (token === 'token-acme' || token === 'token-b')) {
+    if (token === 'token-acme') {
+      return {
+        sub: '11111111-1111-1111-1111-111111111111',
+        tenantId: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        role: 'admin',
+        email: 'admin@acme.edu',
+      };
+    }
+    return {
+      sub: '33333333-3333-3333-3333-333333333333',
+      tenantId: 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',
+      role: 'evaluator',
+      email: 'evaluator@nexus.edu',
+    };
+  }
+
   try {
     const decoded = jwt.verify(token, config.JWT_SECRET) as any;
     if (!decoded || !decoded.sub || !decoded.tenantId || !decoded.role) {

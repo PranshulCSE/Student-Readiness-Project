@@ -15,6 +15,8 @@ export class OutboxPublisher {
     return this.db || getDbClient();
   }
 
+  private hasLoggedConnWarning = false;
+
   start(intervalMs?: number): void {
     if (this.isRunning) return;
     this.isRunning = true;
@@ -23,9 +25,19 @@ export class OutboxPublisher {
     this.intervalTimer = setInterval(async () => {
       try {
         await this.publishBatch();
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error('Outbox publishing error:', err);
+        this.hasLoggedConnWarning = false;
+      } catch (err: any) {
+        const msg = err?.message || String(err);
+        if (msg.includes('ECONNREFUSED')) {
+          if (!this.hasLoggedConnWarning) {
+            // eslint-disable-next-line no-console
+            console.warn('[OutboxPublisher] Database connection refused. Ensure PostgreSQL is running or set USE_MEMORY_DB=true.');
+            this.hasLoggedConnWarning = true;
+          }
+        } else {
+          // eslint-disable-next-line no-console
+          console.error('Outbox publishing error:', msg);
+        }
       }
     }, interval);
   }

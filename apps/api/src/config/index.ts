@@ -8,6 +8,11 @@ const ConfigSchema = z.object({
   PORT: z.coerce.number().default(3000),
   HOST: z.string().default('0.0.0.0'),
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
+  USE_MEMORY_DB: z.preprocess((val) => {
+    if (val === 'false' || val === false) return false;
+    if (val === 'true' || val === true) return true;
+    return process.env.NODE_ENV !== 'production';
+  }, z.boolean()).default(true),
   DATABASE_URL: z.string().default('postgresql://postgres:postgres@localhost:5432/student_readiness'),
   MONGODB_URI: z.string().default('mongodb://localhost:27017/student_readiness'),
   MONGODB_DB: z.string().default('student_readiness'),

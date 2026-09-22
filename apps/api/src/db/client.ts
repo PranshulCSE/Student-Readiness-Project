@@ -79,8 +79,147 @@ export class MemoryDatabaseClient implements IDatabaseClient {
   public idempotency_records: Map<string, any> = new Map();
   public outbox_events: Map<string, any> = new Map();
 
-  constructor() {
+  constructor(seedDev: boolean = false) {
     this.seedCompetencies();
+    if (seedDev) {
+      this.seedDevData();
+    }
+  }
+
+  private seedDevData() {
+    const tenantA = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
+    const tenantB = 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb';
+
+    this.tenants.set(tenantA, {
+      id: tenantA,
+      name: 'Acme Institute of Tech',
+      status: 'active',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    });
+
+    this.tenants.set(tenantB, {
+      id: tenantB,
+      name: 'Nexus University',
+      status: 'active',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    });
+
+    const passwordHash = '$2a$10$wT38xX0U.K7.8hVq5F13Z.Yp2v7m4HkX6W9.rXw3G1Y5R6sX/5mOm';
+    this.users.set('11111111-1111-1111-1111-111111111111', {
+      id: '11111111-1111-1111-1111-111111111111',
+      tenant_id: tenantA,
+      email: 'admin@acme.edu',
+      password_hash: passwordHash,
+      role: 'admin',
+      status: 'active',
+      created_at: new Date().toISOString(),
+    });
+
+    this.users.set('33333333-3333-3333-3333-333333333333', {
+      id: '33333333-3333-3333-3333-333333333333',
+      tenant_id: tenantB,
+      email: 'evaluator@nexus.edu',
+      password_hash: passwordHash,
+      role: 'evaluator',
+      status: 'active',
+      created_at: new Date().toISOString(),
+    });
+
+    const studentsA = [
+      { id: '10000000-0000-0000-0000-000000000001', name: 'John Doe', email: 'john.doe@acme.edu', status: 'active', version: 1 },
+      { id: '10000000-0000-0000-0000-000000000002', name: 'Jane Smith', email: 'jane.smith@acme.edu', status: 'active', version: 1 },
+      { id: '10000000-0000-0000-0000-000000000003', name: 'Alex Johnson', email: 'alex.j@acme.edu', status: 'active', version: 1 },
+      { id: '10000000-0000-0000-0000-000000000004', name: 'Sam Taylor', email: 'sam.t@acme.edu', status: 'inactive', version: 1 },
+    ];
+
+    for (const s of studentsA) {
+      this.students.set(s.id, {
+        id: s.id,
+        tenant_id: tenantA,
+        full_name: s.name,
+        email: s.email,
+        status: s.status,
+        version: s.version,
+        created_at: new Date(Date.now() - 86400000 * 10).toISOString(),
+        updated_at: new Date(Date.now() - 86400000 * 2).toISOString(),
+      });
+    }
+
+    const atts1 = [
+      { id: 'att_01', comp: 'frontend', score: 85 },
+      { id: 'att_02', comp: 'backend', score: 80 },
+      { id: 'att_03', comp: 'databases', score: 75 },
+      { id: 'att_04', comp: 'problem_solving', score: 90 },
+    ];
+    for (const a of atts1) {
+      this.attempts.set(a.id, {
+        id: a.id,
+        tenant_id: tenantA,
+        student_id: studentsA[0].id,
+        competency_key: a.comp,
+        score: a.score,
+        attempted_at: new Date().toISOString(),
+        evaluator_id: '11111111-1111-1111-1111-111111111111',
+        voided_at: null,
+      });
+    }
+
+    const atts2 = [
+      { id: 'att_05', comp: 'frontend', score: 90 },
+      { id: 'att_06', comp: 'backend', score: 85 },
+      { id: 'att_07', comp: 'databases', score: 80 },
+    ];
+    for (const a of atts2) {
+      this.attempts.set(a.id, {
+        id: a.id,
+        tenant_id: tenantA,
+        student_id: studentsA[1].id,
+        competency_key: a.comp,
+        score: a.score,
+        attempted_at: new Date().toISOString(),
+        evaluator_id: '11111111-1111-1111-1111-111111111111',
+        voided_at: null,
+      });
+    }
+
+    const atts3 = [
+      { id: 'att_08', comp: 'frontend', score: 75 },
+      { id: 'att_09', comp: 'backend', score: 72 },
+      { id: 'att_10', comp: 'databases', score: 55 },
+      { id: 'att_11', comp: 'problem_solving', score: 70 },
+    ];
+    for (const a of atts3) {
+      this.attempts.set(a.id, {
+        id: a.id,
+        tenant_id: tenantA,
+        student_id: studentsA[2].id,
+        competency_key: a.comp,
+        score: a.score,
+        attempted_at: new Date().toISOString(),
+        evaluator_id: '11111111-1111-1111-1111-111111111111',
+        voided_at: null,
+      });
+    }
+
+    const studentsB = [
+      { id: '20000000-0000-0000-0000-000000000001', name: 'Maria Garcia', email: 'maria.g@nexus.edu', status: 'active', version: 1 },
+      { id: '20000000-0000-0000-0000-000000000002', name: 'Robert Chen', email: 'robert.c@nexus.edu', status: 'active', version: 1 },
+    ];
+
+    for (const s of studentsB) {
+      this.students.set(s.id, {
+        id: s.id,
+        tenant_id: tenantB,
+        full_name: s.name,
+        email: s.email,
+        status: s.status,
+        version: s.version,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      });
+    }
   }
 
   private seedCompetencies() {
@@ -442,8 +581,9 @@ let activeClient: IDatabaseClient | null = null;
 
 export function getDbClient(): IDatabaseClient {
   if (!activeClient) {
-    if (process.env.USE_MEMORY_DB === 'true' || process.env.NODE_ENV === 'test') {
-      activeClient = new MemoryDatabaseClient();
+    if (config.USE_MEMORY_DB || process.env.USE_MEMORY_DB === 'true' || process.env.NODE_ENV === 'test') {
+      const isDev = process.env.NODE_ENV !== 'test';
+      activeClient = new MemoryDatabaseClient(isDev);
     } else {
       activeClient = new PgDatabaseClient();
     }

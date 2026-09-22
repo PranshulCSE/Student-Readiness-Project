@@ -195,7 +195,7 @@ let activeMongoClient: IMongoClient | null = null;
 
 export function getMongoClient(): IMongoClient {
   if (!activeMongoClient) {
-    if (process.env.USE_MEMORY_DB === 'true' || process.env.NODE_ENV === 'test') {
+    if (config.USE_MEMORY_DB || process.env.USE_MEMORY_DB === 'true' || process.env.NODE_ENV === 'test') {
       activeMongoClient = new MemoryMongoClient();
     } else {
       activeMongoClient = new RealMongoClient();
